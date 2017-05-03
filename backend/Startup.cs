@@ -29,6 +29,15 @@ namespace backend
             services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase());
             services.AddScoped<ITodoRepository, TodoRepository>();
 
+            // Add service and create Policy with options
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", 
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
             // Add framework services.
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
             services.AddSignalR(options => options.Hubs.EnableDetailedErrors = true);
@@ -40,8 +49,10 @@ namespace backend
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseCors("CorsPolicy");
             app.UseMvc();
             app.UseSignalR();
+            app.UseStaticFiles();
         }
     }
 }
