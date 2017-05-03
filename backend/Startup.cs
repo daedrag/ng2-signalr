@@ -1,12 +1,13 @@
-﻿using api.Models;
+﻿using backend.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 
-namespace api
+namespace backend
 {
     public class Startup
     {
@@ -26,9 +27,11 @@ namespace api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase());
-            // Add framework services.
-            services.AddMvc();
             services.AddScoped<ITodoRepository, TodoRepository>();
+
+            // Add framework services.
+            services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+            services.AddSignalR(options => options.Hubs.EnableDetailedErrors = true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +41,7 @@ namespace api
             loggerFactory.AddDebug();
 
             app.UseMvc();
+            app.UseSignalR();
         }
     }
 }

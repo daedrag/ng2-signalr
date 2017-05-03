@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using api.Models;
+using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace api.Controllers
+namespace backend.Controllers
 {
     [Route("api/[controller]")]
     public class TodoController : Controller

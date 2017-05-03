@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace api.Models
+namespace backend.Models
 {
     public class TodoRepository : ITodoRepository
     {
