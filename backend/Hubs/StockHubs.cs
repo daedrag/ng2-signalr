@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using backend.Services;
 using Microsoft.AspNetCore.SignalR;
 
@@ -30,6 +31,17 @@ namespace backend.Hubs
             {
                 Console.WriteLine(ex);
             }
+        }
+
+        public override Task OnDisconnected(bool stopCalled)
+        {
+            var clientId = Context.ConnectionId;
+            var subscriptions = _stockLiveUpdateFactory.GetByClientId(clientId);
+            return Task.Run(() => 
+            {
+                Console.WriteLine($"Client [{clientId}] disconnected. Unsubscribe from {subscriptions.Count} subscriptions");
+                subscriptions.ForEach(stockLiveUpdate => stockLiveUpdate.Unsubscribe(clientId));
+            });
         }
     }
 }

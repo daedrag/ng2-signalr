@@ -9,14 +9,14 @@ namespace backend.Services
     {
         public delegate void StockLiveUpdateEventHandler(object sender, StockLiveUpdateEventArgs args);
         public event StockLiveUpdateEventHandler NewStockUpdated;
-        protected readonly HashSet<string> ClientSubscriptions;
+        protected readonly Dictionary<string, StockLiveUpdateEventHandler> ClientSubscriptions;
         protected readonly string Symbol;
         private readonly Timer _timer;
         private readonly Random _randomizer;
 
         public StockLiveUpdate(string symbol)
         {
-            ClientSubscriptions = new HashSet<string>();
+            ClientSubscriptions = new Dictionary<string, StockLiveUpdateEventHandler>();
             Symbol = symbol;
 
             _timer = new Timer(new TimerCallback(this.BroadcastStockInfo), null,
@@ -24,18 +24,39 @@ namespace backend.Services
             _randomizer = new Random();
         }
 
+        public bool HasClientId(string clientId)
+        {
+            lock (ClientSubscriptions)
+            {
+                return ClientSubscriptions.ContainsKey(clientId);
+            }
+        }
+
         public void Subscribe(string clientId, StockLiveUpdateEventHandler handler)
         {
             lock (ClientSubscriptions)
             {
-                if (ClientSubscriptions.Contains(clientId))
+                if (ClientSubscriptions.ContainsKey(clientId))
                 {
-                    Console.WriteLine($"Exisitng client [{clientId}] subscribes to symbol [{Symbol}]");
+                    Console.WriteLine($"Existing client [{clientId}] subscribes to symbol [{Symbol}]");
                     return;
                 }
                 Console.WriteLine($"New client [{clientId}] subscribes to symbol [{Symbol}]");
-                ClientSubscriptions.Add(clientId);
+                ClientSubscriptions.Add(clientId, handler);
                 NewStockUpdated += handler;
+            }
+        }
+
+        public void Unsubscribe(string clientId)
+        {
+            lock (ClientSubscriptions)
+            {
+                if (!ClientSubscriptions.ContainsKey(clientId))
+                    return;
+                
+                Console.WriteLine($"Client [{clientId}] unsubscribes from symbol [{Symbol}]");
+                var handler = ClientSubscriptions[clientId];
+                NewStockUpdated -= handler;
             }
         }
 
