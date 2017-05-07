@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
+using backend.Services;
 
 namespace backend
 {
@@ -28,6 +29,7 @@ namespace backend
         {
             services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase());
             services.AddScoped<ITodoRepository, TodoRepository>();
+            services.AddScoped<IStockLiveUpdateFactory, StockLiveUpdateFactory>(); 
 
             // Add service and create Policy with options
             services.AddCors(options =>
