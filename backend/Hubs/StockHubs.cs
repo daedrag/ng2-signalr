@@ -23,7 +23,6 @@ namespace backend.Hubs
                     var stockArgs = args as StockLiveUpdateEventArgs;
                     if (stockArgs == null) return;
                     Clients.Client(connectionId).onNewStock(stockArgs.StockInfo);
-                    Console.WriteLine("OnNewStock() called");
                 });
                 stockLiveUpdate.Subscribe(connectionId, callback);
             }
