@@ -1,7 +1,7 @@
 <div>
 <h3>{{ symbol }}</h3>
 <ngb-alert *ngIf="stock" [dismissible]="false">
-  <h4>{{ stock.Price }}</h4>
-  <p>{{ stock.Time }}</p>
+  <h4>$ {{ stock.Price }}</h4>
+  <p>{{ stock.Time | date: 'yyyy-MM-dd HH:mm:ss'}}</p>
 </ngb-alert>
 </div>
