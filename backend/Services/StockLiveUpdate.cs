@@ -12,16 +12,15 @@ namespace backend.Services
         protected readonly Dictionary<string, StockLiveUpdateEventHandler> ClientSubscriptions;
         protected readonly string Symbol;
         private readonly Timer _timer;
-        private readonly Random _randomizer;
 
         public StockLiveUpdate(string symbol)
         {
             ClientSubscriptions = new Dictionary<string, StockLiveUpdateEventHandler>();
             Symbol = symbol;
 
+            var updatePeriod = (new Random(DateTime.Now.Millisecond).NextDouble() + 0.1) * 3;
             _timer = new Timer(new TimerCallback(this.BroadcastStockInfo), null,
-                TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(3));
-            _randomizer = new Random();
+                TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(updatePeriod));
         }
 
         public bool HasClientId(string clientId)
@@ -65,7 +64,7 @@ namespace backend.Services
             lock (this)
             {
                 if (ClientSubscriptions.Count == 0) return;
-                var newPrice = (_randomizer.NextDouble() + 1) * 100;
+                var newPrice = (new Random(DateTime.Now.Millisecond).Next(1, 10000) / 100.0);
                 var newStockInfo = new StockInfo(Symbol, newPrice, DateTime.Now);
                 OnNewStockUpdated(newStockInfo);
             }
