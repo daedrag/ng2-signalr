@@ -27,8 +27,6 @@ namespace backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase());
-            services.AddScoped<ITodoRepository, TodoRepository>();
             services.AddScoped<IStockLiveUpdateFactory, StockLiveUpdateFactory>(); 
 
             // Add service and create Policy with options
