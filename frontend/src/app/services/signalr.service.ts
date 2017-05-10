@@ -45,7 +45,6 @@ export class SignalrService {
 
   private registerOnServerEvents() {
     this.stockHub.client.onNewStock = (stock) => {
-      console.log(stock);
       this.newStockReceived.emit(stock);
     };
   }

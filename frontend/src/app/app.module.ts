@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+
 import { AppComponent } from './app.component';
 import { StockWatchComponent } from './components/stock-watch/stock-watch.component';
 import { StockComponent } from './components/stock/stock.component';
@@ -17,7 +19,8 @@ import { SignalrService } from './services/signalr.service';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    NgbModule.forRoot()
   ],
   providers: [SignalrService],
   bootstrap: [AppComponent]

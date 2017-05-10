@@ -1,1 +1,6 @@
-<stock *ngFor="let symbol of symbols" [symbol]="symbol"></stock>
+<div class="row">
+  <div class="col" *ngFor="let symbol of symbols">
+    <stock [symbol]="symbol">
+    </stock>
+  </div>
+</div>

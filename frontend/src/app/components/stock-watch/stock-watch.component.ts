@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class StockWatchComponent implements OnInit {
 
   symbols: Array<string>;
-  
+
   constructor() { 
     this.symbols = ["APPL", "GOOG"];
   }

@@ -20,8 +20,9 @@ export class StockComponent implements OnInit {
   ngOnInit(): void {
     this.service.newStockReceived.subscribe((data: Stock) => {
       if (data.Symbol === this.symbol) {
+        let newStock = new Stock(data.Symbol, data.Price, data.Time);
         this.ngZone.run(() => {
-          this.stock = data;
+          this.stock = newStock;
         });
       }
     });

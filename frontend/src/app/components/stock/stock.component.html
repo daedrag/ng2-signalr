@@ -1,5 +1,7 @@
-<h3>Symbol: {{ symbol }}</h3>
-<div *ngIf="stock">
+<div>
+<h3>{{ symbol }}</h3>
+<ngb-alert *ngIf="stock" [dismissible]="false">
   <h4>{{ stock.Price }}</h4>
   <p>{{ stock.Time }}</p>
+</ngb-alert>
 </div>
