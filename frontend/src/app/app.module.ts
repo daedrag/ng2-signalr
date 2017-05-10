@@ -4,19 +4,22 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { StockWatchComponent } from './stock-watch/stock-watch.component';
+import { StockWatchComponent } from './components/stock-watch/stock-watch.component';
+import { StockComponent } from './components/stock/stock.component';
+import { SignalrService } from './services/signalr.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    StockWatchComponent
+    StockWatchComponent,
+    StockComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule
   ],
-  providers: [],
+  providers: [SignalrService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
